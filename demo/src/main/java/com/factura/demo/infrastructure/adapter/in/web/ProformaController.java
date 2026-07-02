@@ -54,7 +54,7 @@ public class ProformaController {
         Proforma proforma = new Proforma(
                 UUID.randomUUID().toString(), request.emitterRuc(), request.emitterCompanyName(),
                 request.emitterEstablishmentAddress(), request.establishmentCode(), request.emissionPointCode(),
-                request.sequential(), LocalDate.now(), client, lines, request.paymentMethod()
+                request.sequential(), java.time.LocalDate.now(java.time.ZoneId.of("America/Guayaquil")), client, lines, request.paymentMethod()
         );
 
         Proforma processed = processProformaUseCase.process(proforma);

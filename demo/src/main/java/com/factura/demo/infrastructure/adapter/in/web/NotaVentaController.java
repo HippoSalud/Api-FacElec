@@ -74,7 +74,7 @@ public class NotaVentaController {
                 request.contributorRegime(),
                 request.specialContributorResolution(),
                 request.retentionAgent(),
-                LocalDate.now(),
+                java.time.LocalDate.now(java.time.ZoneId.of("America/Guayaquil")),
                 client,
                 lines,
                 request.paymentMethod()
