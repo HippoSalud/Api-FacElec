@@ -16,13 +16,13 @@ public class InvoiceApplicationService implements ProcessInvoiceUseCase {
     private final InvoiceRepositoryPort invoiceRepository;
     private final SignaturePort signaturePort;
     private final SriGatewayPort sriGateway;
-    private final com.factura.demo.application.port.out.LocalDocumentStoragePort localDocumentStorage;
+    private final com.factura.demo.application.port.out.DocumentStoragePort localDocumentStorage;
 
     public InvoiceApplicationService(
             InvoiceRepositoryPort invoiceRepository,
             SignaturePort signaturePort,
             SriGatewayPort sriGateway,
-            com.factura.demo.application.port.out.LocalDocumentStoragePort localDocumentStorage
+            com.factura.demo.application.port.out.DocumentStoragePort localDocumentStorage
     ) {
         this.invoiceRepository = Objects.requireNonNull(invoiceRepository);
         this.signaturePort = Objects.requireNonNull(signaturePort);

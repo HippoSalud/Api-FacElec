@@ -6,7 +6,6 @@ import com.factura.demo.domain.model.signature.DocumentToSign;
 import com.factura.demo.domain.model.signature.SignatureContext;
 import com.factura.demo.domain.model.signature.SignatureProfile;
 import eu.europa.esig.dss.enumerations.DigestAlgorithm;
-import eu.europa.esig.dss.enumerations.EncryptionAlgorithm;
 import eu.europa.esig.dss.enumerations.SignatureLevel;
 import eu.europa.esig.dss.enumerations.SignaturePackaging;
 import eu.europa.esig.dss.model.DSSDocument;
@@ -54,7 +53,7 @@ public class DssXadesPadesSignatureAdapter implements DigitalSignatureServicePor
         
         // Mapeo exacto de los requerimientos del Anexo 14 del SRI:
         // 1. signatureLevel = XAdES_BES -> Incluye SignedProperties con SigningTime y SigningCertificate (CertDigest e IssuerSerial)
-        parameters.setSignatureLevel(SignatureLevel.XAdES_BASELINE_B); 
+        parameters.setSignatureLevel(SignatureLevel.XAdES_BASELINE_B);
         
         // 2. signaturePackaging = ENVELOPED -> Genera un nodo <ds:Signature> dentro del XML original y añade la referencia de transform ENVELOPED.
         parameters.setSignaturePackaging(SignaturePackaging.ENVELOPED);
@@ -62,18 +61,15 @@ public class DssXadesPadesSignatureAdapter implements DigitalSignatureServicePor
         // 3. digestAlgorithm = SHA1 -> Para <ds:DigestMethod Algorithm="...#sha1"> en todas las referencias (SRI Facturas)
         parameters.setDigestAlgorithm(DigestAlgorithm.SHA1);
         
-        // 4. encryptionAlgorithm = RSA -> Junto con SHA1, resulta en <ds:SignatureMethod Algorithm="...#rsa-sha1">
-        parameters.setEncryptionAlgorithm(EncryptionAlgorithm.RSA);
-        
         // 5. Configurar el certificado para rellenar KeyInfo
         parameters.setSigningCertificate(privateKey.getCertificate());
         parameters.setCertificateChain(privateKey.getCertificateChain());
 
         // LIMITACIONES DE DSS DOCUMENTADAS SEGÚN EL PROMPT:
         // - DSS genera automáticamente los ds:Reference para SignedProperties, KeyInfo (Certificate) y el Documento.
-        // - El orden de los ds:Reference está dictado por las políticas internas de canonización de DSS/Apache Santuario, 
+        // - El orden de los ds:Reference está dictado por las políticas internas de canonización de DSS/Apache Santuario,
         //   y suele coincidir (Properties, KeyInfo, Document), pero no se puede forzar un orden manual arbitrario desde la API pública.
-        // - El Id "Signature620397" o similares en el ejemplo del Anexo 14 son dinámicos. DSS generará Ids únicos (UUIDs o secuenciales) 
+        // - El Id "Signature620397" o similares en el ejemplo del Anexo 14 son dinámicos. DSS generará Ids únicos (UUIDs o secuenciales)
         //   que cumplen con el estándar XAdES. El SRI valida la consistencia de los Ids y referencias, no los valores literales.
 
         CertificateVerifier cv = new CommonCertificateVerifier();
@@ -95,18 +91,17 @@ public class DssXadesPadesSignatureAdapter implements DigitalSignatureServicePor
         
         parameters.setSignatureLevel(SignatureLevel.PAdES_BASELINE_B);
         parameters.setDigestAlgorithm(DigestAlgorithm.SHA1); // Se puede ajustar a SHA-256 si el trámite es otro
-        parameters.setEncryptionAlgorithm(EncryptionAlgorithm.RSA);
         parameters.setSigningCertificate(privateKey.getCertificate());
         parameters.setCertificateChain(privateKey.getCertificateChain());
 
         // Manejo de coordenadas visuales (origen inferior-izquierdo)
         if (context.getVisualSignaturePage() != null && context.getVisualSignatureX() != null && context.getVisualSignatureY() != null) {
             SignatureImageParameters imageParameters = new SignatureImageParameters();
-            // Nota: Se asume que el backend ya hizo la conversión si el origen venía de un Canvas. 
-            // PAdES en DSS usa la coordenada Y desde abajo hacia arriba.
-            imageParameters.setPage(context.getVisualSignaturePage());
-            imageParameters.setxAxis(context.getVisualSignatureX());
-            imageParameters.setyAxis(context.getVisualSignatureY());
+            eu.europa.esig.dss.pades.SignatureFieldParameters fieldParameters = new eu.europa.esig.dss.pades.SignatureFieldParameters();
+            fieldParameters.setPage(context.getVisualSignaturePage());
+            fieldParameters.setOriginX(context.getVisualSignatureX());
+            fieldParameters.setOriginY(context.getVisualSignatureY());
+            imageParameters.setFieldParameters(fieldParameters);
             parameters.setImageParameters(imageParameters);
         }
 

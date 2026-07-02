@@ -16,13 +16,13 @@ public class NotaVentaApplicationService implements ProcessNotaVentaUseCase {
     private final NotaVentaRepositoryPort notaVentaRepository;
     private final SignaturePort signaturePort;
     private final SriGatewayPort sriGateway;
-    private final com.factura.demo.application.port.out.LocalDocumentStoragePort localDocumentStorage;
+    private final com.factura.demo.application.port.out.DocumentStoragePort localDocumentStorage;
 
     public NotaVentaApplicationService(
             NotaVentaRepositoryPort notaVentaRepository,
             SignaturePort signaturePort,
             SriGatewayPort sriGateway,
-            com.factura.demo.application.port.out.LocalDocumentStoragePort localDocumentStorage
+            com.factura.demo.application.port.out.DocumentStoragePort localDocumentStorage
     ) {
         this.notaVentaRepository = Objects.requireNonNull(notaVentaRepository);
         this.signaturePort = Objects.requireNonNull(signaturePort);

@@ -42,8 +42,14 @@ public class BeanConfiguration {
 
 
     @Bean
-    public com.factura.demo.application.port.out.LocalDocumentStoragePort localDocumentStoragePort() {
-        return new com.factura.demo.infrastructure.adapter.out.storage.LocalFileSystemStorageAdapter("./comprobantes_generados");
+    public com.factura.demo.application.port.out.DocumentStoragePort documentStoragePort(
+            @org.springframework.beans.factory.annotation.Value("${r2.bucket-name}") String bucketName,
+            @org.springframework.beans.factory.annotation.Value("${r2.access-key}") String accessKey,
+            @org.springframework.beans.factory.annotation.Value("${r2.secret-key}") String secretKey,
+            @org.springframework.beans.factory.annotation.Value("${r2.endpoint}") String endpoint,
+            @org.springframework.beans.factory.annotation.Value("${r2.cdn-url}") String cdnUrl) {
+        return new com.factura.demo.infrastructure.adapter.out.storage.R2StorageAdapter(
+                bucketName, accessKey, secretKey, endpoint, cdnUrl);
     }
 
     @Bean
@@ -51,8 +57,8 @@ public class BeanConfiguration {
             InvoiceRepositoryPort invoiceRepositoryPort,
             SignaturePort signaturePort,
             SriGatewayPort sriGatewayPort,
-            com.factura.demo.application.port.out.LocalDocumentStoragePort localDocumentStoragePort) {
-        return new InvoiceApplicationService(invoiceRepositoryPort, signaturePort, sriGatewayPort, localDocumentStoragePort);
+            com.factura.demo.application.port.out.DocumentStoragePort documentStoragePort) {
+        return new InvoiceApplicationService(invoiceRepositoryPort, signaturePort, sriGatewayPort, documentStoragePort);
     }
 
     @Bean
@@ -69,9 +75,9 @@ public class BeanConfiguration {
             NotaVentaRepositoryPort notaVentaRepositoryPort,
             SignaturePort signaturePort,
             SriGatewayPort sriGatewayPort,
-            com.factura.demo.application.port.out.LocalDocumentStoragePort localDocumentStoragePort
+            com.factura.demo.application.port.out.DocumentStoragePort documentStoragePort
     ) {
-        return new NotaVentaApplicationService(notaVentaRepositoryPort, signaturePort, sriGatewayPort, localDocumentStoragePort);
+        return new NotaVentaApplicationService(notaVentaRepositoryPort, signaturePort, sriGatewayPort, documentStoragePort);
     }
 
     @Bean
@@ -106,8 +112,8 @@ public class BeanConfiguration {
             com.factura.demo.application.port.out.NotaCreditoRepositoryPort notaCreditoRepositoryPort,
             SignaturePort signaturePort,
             SriGatewayPort sriGatewayPort,
-            com.factura.demo.application.port.out.LocalDocumentStoragePort localDocumentStoragePort) {
+            com.factura.demo.application.port.out.DocumentStoragePort documentStoragePort) {
         return new com.factura.demo.application.service.NotaCreditoApplicationService(
-                notaCreditoRepositoryPort, signaturePort, sriGatewayPort, localDocumentStoragePort);
+                notaCreditoRepositoryPort, signaturePort, sriGatewayPort, documentStoragePort);
     }
 }

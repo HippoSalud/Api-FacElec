@@ -118,6 +118,13 @@
 			<artifactId>jaxb-runtime</artifactId>
 			<version>2.3.6</version>
 		</dependency>
+
+		<!-- AWS SDK v2 for Cloudflare R2 -->
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>s3</artifactId>
+			<version>2.20.162</version>
+		</dependency>
 	</dependencies>
 
 	<build>

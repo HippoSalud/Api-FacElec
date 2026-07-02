@@ -1,7 +1,7 @@
 package com.factura.demo.application.service;
 
 import com.factura.demo.application.port.in.ProcessNotaCreditoUseCase;
-import com.factura.demo.application.port.out.LocalDocumentStoragePort;
+import com.factura.demo.application.port.out.DocumentStoragePort;
 import com.factura.demo.application.port.out.NotaCreditoRepositoryPort;
 import com.factura.demo.application.port.out.SignaturePort;
 import com.factura.demo.application.port.out.SriGatewayPort;
@@ -15,13 +15,13 @@ public class NotaCreditoApplicationService implements ProcessNotaCreditoUseCase 
     private final NotaCreditoRepositoryPort notaCreditoRepository;
     private final SignaturePort signaturePort;
     private final SriGatewayPort sriGateway;
-    private final LocalDocumentStoragePort localDocumentStoragePort;
+    private final DocumentStoragePort localDocumentStoragePort;
 
     public NotaCreditoApplicationService(
             NotaCreditoRepositoryPort notaCreditoRepository,
             SignaturePort signaturePort,
             SriGatewayPort sriGateway,
-            LocalDocumentStoragePort localDocumentStoragePort) {
+            DocumentStoragePort localDocumentStoragePort) {
         this.notaCreditoRepository = notaCreditoRepository;
         this.signaturePort = signaturePort;
         this.sriGateway = sriGateway;
